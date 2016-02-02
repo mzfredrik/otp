@@ -204,8 +204,10 @@ size(Val) ->
     Map2 :: map(),
     K :: term().
 
-without(Ks,M) when is_list(Ks), is_map(M) ->
-    maps:from_list([{K,V}||{K,V} <- maps:to_list(M), not lists:member(K, Ks)]);
+without([K|Ks],M) when is_map(M) ->
+    without(Ks,maps:remove(K,M));
+without([],M) when is_map(M) ->
+    M;
 without(Ks,M) ->
     erlang:error(error_type(M),[Ks,M]).
 
