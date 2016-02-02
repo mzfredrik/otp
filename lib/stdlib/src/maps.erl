@@ -22,7 +22,7 @@
 
 -export([get/3,filter/2,fold/3, map/2,
          size/1,
-         without/2, with/2]).
+         without/2, with/2, with/3]).
 
 
 %%% BIFs
@@ -220,6 +220,24 @@ with(Ks,M) when is_list(Ks), is_map(M) ->
     maps:from_list([{K,V}||{K,V} <- maps:to_list(M), lists:member(K, Ks)]);
 with(Ks,M) ->
     erlang:error(error_type(M),[Ks,M]).
+
+
+-spec with(Ks,Map1,Map2) -> Map3 when
+    Ks :: [K],
+    Map1 :: map(),
+    Map2 :: map(),
+    Map3 :: map(),
+    K :: term().
+
+with([K|Ks],M,A) when is_map(M), is_map(A) ->
+    case maps:find(K,M) of
+        {ok,V} -> with(Ks,M,maps:put(K,V,A));
+        error -> with(Ks,M,A)
+    end;
+with([],M,A) when is_map(M) ->
+    A;
+with(Ks,M,A) when is_map(M) -> erlang:error(error_type(A),[Ks,M,A]);
+with(Ks,M,A) -> erlang:error(error_type(M),[Ks,M,A]);
 
 
 error_type(M) when is_map(M) -> badarg;

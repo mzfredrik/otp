@@ -37,7 +37,7 @@
 
 -export([t_get_3/1, t_filter_2/1,
          t_fold_3/1,t_map_2/1,t_size_1/1,
-         t_with_2/1,t_without_2/1]).
+         t_with_2/1,t_with_3/1,t_without_2/1]).
 
 %-define(badmap(V,F,Args), {'EXIT', {{badmap,V}, [{maps,F,Args,_}|_]}}).
 %-define(badarg(F,Args), {'EXIT', {badarg, [{maps,F,Args,_}|_]}}).
@@ -51,7 +51,7 @@ suite() ->
 all() ->
     [t_get_3,t_filter_2,
      t_fold_3,t_map_2,t_size_1,
-     t_with_2,t_without_2].
+     t_with_2,t_with_3,t_without_2].
 
 init_per_suite(Config) ->
     Config.
@@ -101,6 +101,20 @@ t_with_2(_Config) ->
     ?badmap(a,with,[[a,b],a]) = (catch maps:with([a,b],id(a))),
     ?badmap(a,with,[{a,b},a]) = (catch maps:with({a,b},id(a))),
     ?badarg(with,[a,#{}]) = (catch maps:with(a,#{})),
+    ok.
+
+t_with_3(_Config) ->
+    Ki = [11,22,33,44,55,66,77,88,99],
+    M0 = maps:from_list([{{k,I},{v,I}}||I<-lists:seq(1,100)]),
+    M1 = maps:from_list([{{k,I},{v,I}}||I<-Ki]),
+    M1 = maps:with([{k,I}||I <- Ki],M0,#{}),
+
+    %% error case
+    ?badmap(a,with,[[a,b],a]) = (catch maps:with([a,b],#{},id(a))),
+    ?badmap(a,with,[{a,b},a]) = (catch maps:with({a,b},#{},id(a))),
+    ?badmap(a,with,[[a,b],a]) = (catch maps:with([a,b],id(a),#{})),
+    ?badmap(a,with,[{a,b},a]) = (catch maps:with({a,b},id(a),#{})),
+    ?badarg(with,[a,#{},#{}]) = (catch maps:with(a,#{},#{})),
     ok.
 
 t_filter_2(Config) when is_list(Config) ->
