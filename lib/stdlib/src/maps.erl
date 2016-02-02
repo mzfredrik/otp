@@ -216,10 +216,8 @@ without(Ks,M) ->
     Map2 :: map(),
     K :: term().
 
-with(Ks,M) when is_list(Ks), is_map(M) ->
-    maps:from_list([{K,V}||{K,V} <- maps:to_list(M), lists:member(K, Ks)]);
 with(Ks,M) ->
-    erlang:error(error_type(M),[Ks,M]).
+    with(Ks,M,#{}).
 
 
 -spec with(Ks,Map1,Map2) -> Map3 when
