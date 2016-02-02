@@ -11,7 +11,7 @@
       Licensed under the Apache License, Version 2.0 (the "License");
       you may not use this file except in compliance with the License.
       You may obtain a copy of the License at
- 
+
           http://www.apache.org/licenses/LICENSE-2.0
 
       Unless required by applicable law or agreed to in writing, software
@@ -61,7 +61,7 @@
 			<desc>
 				<p>
 					Returns a tuple <c>{ok, Value}</c> where <c><anno>Value</anno></c> is the value associated with <c><anno>Key</anno></c>,
-					or <c>error</c> if no value is associated with <c><anno>Key</anno></c> in <c><anno>Map</anno></c>. 
+					or <c>error</c> if no value is associated with <c><anno>Key</anno></c> in <c><anno>Map</anno></c>.
 				</p>
 				<p>
 					The call will fail with a <c>{badmap,Map}</c> exception if <c><anno>Map</anno></c> is not a map.
